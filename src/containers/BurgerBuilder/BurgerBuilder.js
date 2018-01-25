@@ -45,10 +45,15 @@ class BurgerBuilder extends Component {
 		this.setState({ingredients: ingredients, totalPrice: price })
 	}
 	render(){
+		let ingredients = {...this.state.ingredients}
+		for(let key in ingredients){
+			ingredients[key] = ingredients[key] <= 0;
+		}
+		console.log(ingredients)
 		return(
 			<Aux>
 				<Burger ingredients={this.state.ingredients} price={this.state.totalPrice} />
-				<BuildControls add={this.addItem} rest={this.restItem} />
+				<BuildControls add={this.addItem} rest={this.restItem} disabledControl={ingredients} />
 			</Aux>
 		);
 	}
