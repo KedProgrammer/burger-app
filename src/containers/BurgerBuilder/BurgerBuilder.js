@@ -20,17 +20,32 @@ class BurgerBuilder extends Component {
 			cheese: 0,
 			meat: 0
 		},
-		totalPrice: 1
+		totalPrice: 1,
+		purcheable: false
+	}
+
+	checkPurcheable (updatedIngredients) {
+	
+		let sum = Object.keys(updatedIngredients).reduce((suma,item) => {
+			return suma + updatedIngredients[item]
+
+		},0)
+		let prueba = sum > 0
+		this.setState({purcheable: sum > 0 })
+		
 	}
 
 	addItem = (ingredient) => {
 		let ingredients = {...this.state.ingredients};
 		ingredients[ingredient] = ingredients[ingredient] + 1;
-		this.setState({ingredients: ingredients, totalPrice: Object.keys(ingredients).reduce((new1 , old) => {
-			new1 = new1 +  ingredients[old]*INGREDIENT_PRICES[old]
-			return new1;
-		}, 0)})
-		console.log("hola")
+		let oldPrice = this.state.totalPrice;
+		let updatedPrice = oldPrice + INGREDIENT_PRICES[ingredient]
+		// this.setState({ingredients: ingredients, totalPrice: Object.keys(ingredients).reduce((new1 , old) => {
+			// new1 = new1 +  ingredients[old]*INGREDIENT_PRICES[old]
+			// return new1;
+		// }, // 0)})
+		this.setState({ingredients : ingredients, totalPrice: updatedPrice})
+		this.checkPurcheable(ingredients)
 	}
 
 	restItem = (ingredient) => {
@@ -43,6 +58,7 @@ class BurgerBuilder extends Component {
 			price = price - INGREDIENT_PRICES[ingredient]
 		}
 		this.setState({ingredients: ingredients, totalPrice: price })
+		this.checkPurcheable(ingredients)
 	}
 	render(){
 		let ingredients = {...this.state.ingredients}
@@ -53,7 +69,10 @@ class BurgerBuilder extends Component {
 		return(
 			<Aux>
 				<Burger ingredients={this.state.ingredients} price={this.state.totalPrice} />
-				<BuildControls add={this.addItem} rest={this.restItem} disabledControl={ingredients} price={this.state.totalPrice} />
+				<BuildControls add={this.addItem} rest={this.restItem} disabledControl={ingredients} price={this.state.totalPrice} 
+				purcheable = {this.state.purcheable}
+				 />
+				}
 			</Aux>
 		);
 	}
