@@ -2,6 +2,11 @@ import React, {Component} from 'react'
 import Aux from '../../hoc/Auxiliar'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
+import Modal from '../../components/UI/Modal/Modal'
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
+
+
+
 const INGREDIENT_PRICES = {
 	salad: 0.5,
 	cheese: 0.4,
@@ -21,7 +26,8 @@ class BurgerBuilder extends Component {
 			meat: 0
 		},
 		totalPrice: 1,
-		purcheable: false
+		purcheable: false,
+		showModal: false
 	}
 
 	checkPurcheable (updatedIngredients) {
@@ -30,9 +36,14 @@ class BurgerBuilder extends Component {
 			return suma + updatedIngredients[item]
 
 		},0)
-		let prueba = sum > 0
+		
 		this.setState({purcheable: sum > 0 })
 		
+	}
+
+	toggleModal = () => {
+		this.setState({showModal: true})
+		console.log(this.state.showModal)
 	}
 
 	addItem = (ingredient) => {
@@ -65,13 +76,19 @@ class BurgerBuilder extends Component {
 		for(let key in ingredients){
 			ingredients[key] = ingredients[key] <= 0;
 		}
-		console.log(ingredients)
+	
 		return(
+
 			<Aux>
+				<Modal show={this.state.showModal}>
+					<OrderSummary ingredients={this.state.ingredients} show={this.state.showModal} />
+				</Modal>
 				<Burger ingredients={this.state.ingredients} price={this.state.totalPrice} />
 				<BuildControls add={this.addItem} rest={this.restItem} disabledControl={ingredients} price={this.state.totalPrice} 
 				purcheable = {this.state.purcheable}
+				show={this.toggleModal}
 				 />
+				}
 				}
 			</Aux>
 		);
