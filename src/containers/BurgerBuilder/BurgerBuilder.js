@@ -20,25 +20,25 @@ class BurgerBuilder extends Component {
 	// }
 	state = {
 		ingredients: {
-			salad: 2,
+			salad: 0,
 			bacon: 0,
 			cheese: 0,
 			meat: 0
 		},
-		totalPrice: 1,
+		totalPrice: 0,
 		purcheable: false,
 		showModal: false
 	}
 
 	checkPurcheable (updatedIngredients) {
-	
+
 		let sum = Object.keys(updatedIngredients).reduce((suma,item) => {
 			return suma + updatedIngredients[item]
 
 		},0)
-		
+
 		this.setState({purcheable: sum > 0 })
-		
+
 	}
 
 	toggleModal = () => {
@@ -58,6 +58,13 @@ class BurgerBuilder extends Component {
 		this.setState({ingredients : ingredients, totalPrice: updatedPrice})
 		this.checkPurcheable(ingredients)
 	}
+	 purchaseCancelHandler = () => {
+		 this.setState({showModal: false})
+	 }
+
+	 purchaseContinueHandler = () => {
+		 alert('You continue')
+	 }
 
 	restItem = (ingredient) => {
 		let ingredients = {...this.state.ingredients};
@@ -76,20 +83,18 @@ class BurgerBuilder extends Component {
 		for(let key in ingredients){
 			ingredients[key] = ingredients[key] <= 0;
 		}
-	
+
 		return(
 
 			<Aux>
-				<Modal show={this.state.showModal}>
-					<OrderSummary ingredients={this.state.ingredients} show={this.state.showModal} />
+				<Modal show={this.state.showModal} modalClosed={this.purchaseCancelHandler}>
+					<OrderSummary purchaseContinue={this.purchaseContinueHandler} purchaseCanceled={this.purchaseCancelHandler} ingredients={this.state.ingredients} show={this.state.showModal} price={this.state.totalPrice}  />
 				</Modal>
 				<Burger ingredients={this.state.ingredients} price={this.state.totalPrice} />
-				<BuildControls add={this.addItem} rest={this.restItem} disabledControl={ingredients} price={this.state.totalPrice} 
+				<BuildControls add={this.addItem} rest={this.restItem} disabledControl={ingredients} price={this.state.totalPrice}
 				purcheable = {this.state.purcheable}
 				show={this.toggleModal}
 				 />
-				}
-				}
 			</Aux>
 		);
 	}
