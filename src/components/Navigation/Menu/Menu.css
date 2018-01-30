@@ -1,0 +1,30 @@
+.Menu {
+	padding: 8%;
+	height: 80%;
+	width: 1px;
+	box-sizing: border-box;
+	display: flex;
+	flex-flow: column;
+	flex-direction: column;
+	justify-content: space-around;
+	
+	align-items: center;
+
+
+}
+
+@media (min-width: 500px) {
+	.Menu {
+		display: none;
+
+	}
+}
+
+
+.Menu div {
+	height: 2px;
+	width: 25px;
+	background-color: white;
+	margin: 2px;
+
+}
