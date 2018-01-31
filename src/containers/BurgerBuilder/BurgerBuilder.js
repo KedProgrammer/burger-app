@@ -22,16 +22,18 @@ class BurgerBuilder extends Component {
 	//	this.state = {}
 	// }
 	state = {
-		ingredients: {
-			salad: 0,
-			bacon: 0,
-			cheese: 0,
-			meat: 0
-		},
+		ingredients: null,
 		totalPrice: 0,
 		purcheable: false,
 		showModal: false,
 		loading: false
+	}
+
+	componentDidMount() {
+		axios.get('https://burguer-app.firebaseio.com/Ingredients.json')
+		.then(response => {
+			this.setState({ingredients: response.data});
+		})
 	}
 
 	checkPurcheable (updatedIngredients) {
@@ -108,10 +110,25 @@ class BurgerBuilder extends Component {
 		for(let key in ingredients){
 			ingredients[key] = ingredients[key] <= 0;
 		}
-		let orderSummary = <OrderSummary purchaseContinue={this.purchaseContinueHandler} purchaseCanceled={this.purchaseCancelHandler} ingredients={this.state.ingredients} show={this.state.showModal} price={this.state.totalPrice}  />
-		if 	(this.state.loading) {
-			orderSummary = <Spinner />
+		let orderSummary = null;
+
+
+
+		let burger = <Spinner />
+		if (this.state.ingredients) {
+			 burger =
+			<Aux>
+				<Burger ingredients={this.state.ingredients} price={this.state.totalPrice} />
+				<BuildControls add={this.addItem} rest={this.restItem} disabledControl={ingredients} price={this.state.totalPrice}
+				purcheable = {this.state.purcheable}
+				show={this.toggleModal}
+				 />
+			</Aux>
+			orderSummary = <OrderSummary purchaseContinue={this.purchaseContinueHandler} purchaseCanceled={this.purchaseCancelHandler} ingredients={this.state.ingredients} show={this.state.showModal} price={this.state.totalPrice}  />
 		}
+		if (this.state.loading){
+		orderSummary = <Spinner />
+	}
 
 		return(
 
@@ -119,11 +136,7 @@ class BurgerBuilder extends Component {
 				<Modal show={this.state.showModal} modalClosed={this.purchaseCancelHandler}>
 					{orderSummary}
 				</Modal>
-				<Burger ingredients={this.state.ingredients} price={this.state.totalPrice} />
-				<BuildControls add={this.addItem} rest={this.restItem} disabledControl={ingredients} price={this.state.totalPrice}
-				purcheable = {this.state.purcheable}
-				show={this.toggleModal}
-				 />
+				{burger}
 			</Aux>
 		);
 	}
