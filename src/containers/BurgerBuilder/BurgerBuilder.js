@@ -49,7 +49,7 @@ class BurgerBuilder extends Component {
 
 	toggleModal = () => {
 		this.setState({showModal: true})
-		console.log(this.state.showModal)
+
 	}
 
 	addItem = (ingredient) => {
@@ -91,7 +91,17 @@ class BurgerBuilder extends Component {
 		//  .catch(error => {
 		// 	 this.setState({loading: false, showModal: false});
 		//  });
-		this.props.history.push('/checkout');
+		let queryParams = [];
+
+		for (let i in this.state.ingredients){
+			queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
+		}
+
+		const queryString = queryParams.join('&');
+		this.props.history.push({
+			pathname: '/checkout',
+			search: '?' + queryString
+		});
 	 }
 
 	restItem = (ingredient) => {
