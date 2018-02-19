@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+	import React, { Component } from 'react';
 import Button from '../../../components/UI/Button/Button'
 import classes from './ContactData.css'
 import axios from '../../../axios-orders';
@@ -7,11 +7,59 @@ import Input from '../../../components/UI/Input/Input'
 
 export class ContactData extends Component {
 	state = {
-		name: '',
-		email: '',
-		address: {
-			street: '',
-			postalcode: ''
+		orderForm: {
+			name: {
+				elementType: 'input',
+				elementConfig: {
+					type: 'text',
+					placeholder: 'Your name'
+				},
+				value: ''
+			},
+			street:  {
+				elementType: 'input',
+				elementConfig: {
+					type: 'text',
+					placeholder: 'Street'
+				},
+				value: ''
+			} ,
+			zipCode: {
+				elementType: 'input',
+				elementConfig: {
+					type: 'text',
+					placeholder: 'ZIP Code'
+				},
+				value: ''
+			} ,
+			country:  {
+				elementType: 'input',
+				elementConfig: {
+					type: 'text',
+					placeholder: 'Your Country'
+				},
+				value: ''
+			},
+
+			email:  {
+				elementType: 'input',
+				elementConfig: {
+					type: 'email',
+					placeholder: 'Your E-mail'
+				},
+				value: ''
+			},
+			deliverMethod:  {
+				elementType: 'select',
+				elementConfig: {
+					options: [
+					{value: 'fastest', displayValue: 'Fastest'},
+					{value: 'cheapest', displayValue: 'cheapest'},
+					]
+				},
+				value: ''
+			}
+			
 		},
 		loading: false
 	}
@@ -47,10 +95,9 @@ export class ContactData extends Component {
 	render() {
 		let form = (
 				<form>
-					<Input  inputType = "input "  type="text" name="name" placeholder="Your name" />
-					<Input  inputType = "input "type="email" name="email" placeholder="Your email"/>
-					<Input  inputType = "input "type="text" name="street" placeholder="Your street"/>
-					<Input  inputType = "input "type="text" name="postal" placeholder="postalcode"/>
+					{Object.keys(this.state.orderForm).map(element => {
+						return <Input  elementType = {this.state.orderForm[element].elementType} elementConfig = {this.state.orderForm[element].elementConfig} value = {this.state.orderForm[element].value} />
+					})}
 					<Button btnType="Success" clicked={this.orderHandler}>Order</Button>
 				</form>
 			);

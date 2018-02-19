@@ -1,3 +1,4 @@
+
 import React , {Component} from 'react'
 import PropTypes from 'prop-types'
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary'
@@ -18,7 +19,7 @@ class Checkout  extends Component {
       }else{
          ingredients[param[0]] = +param[1];
       }
-     
+    
     }
     this.setState({ingredients: ingredients, totalPrice: price})
   }
@@ -28,6 +29,7 @@ class Checkout  extends Component {
 
   checkoutContinuedHandler = () => {
     this.props.history.replace('/checkout/contact-data')
+    
   }
 
   render () {
