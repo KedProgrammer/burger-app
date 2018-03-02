@@ -19,7 +19,7 @@ class BurgerBuilder extends Component {
 	//	this.state = {}
 	// }
 	state = {
-		purcheable: false,
+
 		showModal: false,
 		loading: false
 	}
@@ -38,7 +38,7 @@ class BurgerBuilder extends Component {
 
 		}, 0)
 
-		this.setState({ purcheable: sum > 0 })
+		return sum > 0
 
 	}
 
@@ -53,39 +53,7 @@ class BurgerBuilder extends Component {
 	}
 
 	purchaseContinueHandler = () => {
-		//  this.setState({loading: true})
-		//  const order = {
-		// 	 ingredients: this.state.ingredients,
-		// 	 price: this.state.totalPrice,
-		// 	 customer: {
-		// 		 name: 'Daniel Tobon',
-		// 		 addres: {
-		// 			 street: 'calle falsa 123',
-		// 			 zipCode: '12345',
-		// 			 country: 'Colombia'
-		// 		 },
-		// 		 email: 'shiriux1@gmail.com'
-		// 	 },
-		// 	 deliverMethod: 'fastest'
-		//  }
-		//  axios.post('/orders.json', order)
-		//  .then(response => {
-		// 	 this.setState({loading: false, showModal: false});
-		//  })
-		//  .catch(error => {
-		// 	 this.setState({loading: false, showModal: false});
-		//  });
-		let queryParams = [];
-
-		for (let i in this.state.ingredients) {
-			queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
-		}
-
-		const queryString = queryParams.join('&');
-		this.props.history.push({
-			pathname: '/checkout',
-			search: '?' + queryString
-		});
+		this.props.history.push('/checkout')
 	}
 
 
@@ -102,7 +70,7 @@ class BurgerBuilder extends Component {
 				<Aux>
 					<Burger ingredients={this.props.ings} price={this.props.totalPrice} />
 					<BuildControls add={this.props.onIngredientAdded} rest={this.props.onIngredientRemove} disabledControl={ingredients} price={this.props.totalPrice}
-						purcheable={this.state.purcheable}
+						purcheable={this.checkPurcheable(this.props.ings)}
 						show={this.toggleModal}
 					/>
 				</Aux>
