@@ -1,2 +1,0 @@
-export const ADD_BURGUER = 'ADD_BURGUER'
-export const REMOVE_BURGUER = 'REMOVE_BURGUER'
