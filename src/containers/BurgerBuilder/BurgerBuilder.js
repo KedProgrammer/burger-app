@@ -62,8 +62,9 @@ class BurgerBuilder extends Component {
 		let orderSummary = null;
 
 		let burger = this.props.error ? <p>ingredients can not be loaded</p> : <Spinner />
+		console.log(this.props.ings)
 		if (this.props.ings) {
-			burger =
+			burger = 
 				<Aux>
 					<Burger ingredients={this.props.ings} price={this.props.totalPrice} />
 					<BuildControls add={this.props.onIngredientAdded} rest={this.props.onIngredientRemove} disabledControl={ingredients} price={this.props.totalPrice}

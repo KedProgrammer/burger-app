@@ -4,7 +4,7 @@ import axios from '../../axios-orders';
 export const addIngredient = (name) => {
     return {
         type: actionTypes.ADD_BURGUER,
-        name: name
+        ingredientName: name
     }
 }
 

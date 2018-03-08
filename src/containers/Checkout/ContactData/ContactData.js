@@ -5,6 +5,8 @@ import axios from '../../../axios-orders';
 import Spinner from  '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
 import {connect} from 'react-redux'
+import withErrorHandler from '../../../hoc/WithErrorHandler/WithErrorHandler'
+import * as orderActions from '../../../store/actions/index'
 
 export class ContactData extends Component {
 	state = {
@@ -91,8 +93,8 @@ export class ContactData extends Component {
 			}
 			
 		},
-		formIsValid: false,
-		loading: false
+		formIsValid: false
+		
 	}
 
 	checkValidity (value, rules) {
@@ -138,7 +140,7 @@ export class ContactData extends Component {
 
 	orderHandler = (event) => {
 		event.preventDefault();
-		this.setState({loading: true});
+		
 		const data = {}
 		for (let formDataValue in this.state.orderForm) {
 			data[formDataValue] = this.state.orderForm[formDataValue].value
@@ -149,14 +151,7 @@ export class ContactData extends Component {
  	 			price: this.state.totalP,
  	 			order: data
 		  }
-		  axios.post('/orders.json', order)
-		  .then(response => {
-			 this.setState({loading: false});
-			 this.props.history.push('/');
-		  })
-		  .catch(error => {
-		 	 this.setState({loading: false});
-		 });
+		this.props.onPurchase(order)
 	}
 
 
@@ -169,7 +164,7 @@ export class ContactData extends Component {
 					<Button btnType="Success" clicked={this.orderHandler} disabled={!this.state.formIsValid}>Order</Button>
 				</form>
 			);
-		if (this.state.loading){
+		if (this.props.loading){
 			form = <Spinner />
 		}
 		return (
@@ -185,8 +180,17 @@ export class ContactData extends Component {
 const mapStateToProps = (stat) => {
 	return {
 	  ings: stat.ingredients,
-	  totalP: stat.totalPrice
+	  totalP: stat.totalPrice,
+	  loading: stat.loading
 	}
   }
 
-export default ContactData;
+  const mapDispatchToProps = (dispatch) => {
+	  return {
+		  onPurchase: (orderData) => dispatch(orderActions.purchaseBurger(orderData))
+	  }
+  }
+
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(ContactData,axios));

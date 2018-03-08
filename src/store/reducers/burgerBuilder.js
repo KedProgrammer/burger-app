@@ -1,5 +1,5 @@
-import * as actionTypes from '../actions/actionsTypes'
-
+    import * as actionTypes from '../actions/actionsTypes'
+    
 const initialState = {
     ingredients: null,
     totalPrice: 4,
@@ -24,7 +24,7 @@ const reducer = (stat = initialState, action) => {
                     [action.ingredientName]: stat.ingredients[action.ingredientName] + 1
                 },
                 totalPrice: stat.totalPrice + INGREDIENT_PRICES[action.ingredientName]
-                
+               
             }
            
         case actionTypes.REMOVE_BURGUER:
